@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "target": "es5",
+    "experimentalDecorators": true,
+    "sourceMap": true,
+    "skipDefaultLibCheck": true,
+    "strict": true,
+    "keyofStringsOnly": true,
+    "noImplicitAny": true,
+    "removeComments": true,
+    "lib": [
+      "es2018",
+      "dom"
+    ],
+    "types": [
+      "webpack-env"
+    ],
+    "paths": {
+      "utils/*": [
+        "src/utils/*"
+      ]
+    }
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}

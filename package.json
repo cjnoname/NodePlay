@@ -1,0 +1,45 @@
+{
+  "name": "node_service_layer",
+  "author": "CJ <chengj@ticketek.com.au>",
+  "version": "0.0.1",
+  "scripts": {
+    "start": "webpack --watch --config webpack.config.js --mode development",
+    "build": "webpack --config webpack.config.js --mode production",
+    "prod": "npm run build && npm run run-prod",
+    "run-prod": "npm start --prefix dist",
+    "clean": "del package-lock.json && rimraf node_modules/",
+    "create": "npm run create --prefix dist",
+    "update": "npm run update --prefix dist",
+    "destroy": "npm run destroy --prefix dist",
+    "publish": "npm run build && npm run prod-clean --prefix dist && npm run update"
+  },
+  "devDependencies": {
+    "nodemon-webpack-plugin": "^4.0.3",
+    "tslint": "^5.10.0",
+    "tslint-loader": "^3.6.0",
+    "tslint-react": "^3.6.0"
+  },
+  "peerDependencies": {
+    "express": "4.16.3"
+  },
+  "dependencies": {
+    "@types/dotenv": "4.0.3",
+    "@types/express": "4.16.0",
+    "@types/node-fetch": "2.1.1",
+    "@types/webpack-env": "1.13.6",
+    "awesome-typescript-loader": "5.2.0",
+    "dotenv": "6.0.0",
+    "history": "4.7.2",
+    "immutable": "4.0.0-rc.9",
+    "inversify": "^4.13.0",
+    "inversify-express-utils": "^6.1.0",
+    "node-fetch": "2.1.2",
+    "node-noop": "1.0.0",
+    "typescript": "2.9.2",
+    "webpack": "4.16.0",
+    "webpack-cli": "3.0.8"
+  },
+  "files": [
+    "src/shared/types/*"
+  ]
+}
