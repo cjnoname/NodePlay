@@ -8,8 +8,7 @@
   "rules": {
     "quotemark": [
       true,
-      "single",
-      "jsx-double"
+      "double"
     ],
     "semicolon": [
       true,

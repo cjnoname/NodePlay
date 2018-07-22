@@ -1,22 +1,22 @@
-import { IException, isNoContent } from './error';
-import fetch from 'node-fetch';
+import { IException, isNoContent } from "utils/error";
+import fetch from "node-fetch";
 
-const fetchIt = (typeof window !== 'undefined' && window.fetch) ? window.fetch : fetch as any;
+const fetchIt = (typeof window !== "undefined" && window.fetch) ? window.fetch : fetch as any;
 
 const sharedHeaders = {
-  Accept: 'application/json',
-  'Content-Type': 'application/json'
+  Accept: "application/json",
+  "Content-Type": "application/json"
 };
 
 enum HttpMethods {
-  GET = 'GET',
-  POST = 'POST',
-  PUT = 'PUT',
-  PATCH = 'PATCH',
-  DELETE = 'DELETE'
+  GET = "GET",
+  POST = "POST",
+  PUT = "PUT",
+  PATCH = "PATCH",
+  DELETE = "DELETE"
 }
 
-const buildURL = (path: string) => path.indexOf('?') > 0 ? `api/${path}` : `api/${path}`;
+const buildURL = (path: string) => path.indexOf("?") > 0 ? `api/${path}` : `api/${path}`;
 
 const get = <T>(path: string, data?: any, headers = {}, external: boolean = false): Promise<T | undefined> => {
   path = data ? `${path}?${getQueryString(data)}` : path;
@@ -30,12 +30,12 @@ const getQueryString = (params: any) => (
       if (Array.isArray(params[k])) {
         return params[k]
           .map((val: any) => `${encodeURIComponent(k)}[]=${encodeURIComponent(val)}`)
-          .join('&');
+          .join("&");
       }
 
       return `${encodeURIComponent(k)}=${encodeURIComponent(params[k])}`;
     })
-    .join('&'));
+    .join("&"));
 
 const post = <T>(path: string, data: any, headers = {}, external: boolean = false): Promise<T | undefined> => (
   doFetch(path, data, HttpMethods.POST, headers, external));
@@ -77,7 +77,7 @@ const getResult = (response: Response) => {
   if (isNoContent(response)) {
     return undefined;
   }
-  if (/application\/json/.test(response.headers.get('Content-Type')!)) {
+  if (/application\/json/.test(response.headers.get("Content-Type")!)) {
     return response.json();
   } else {
     return response.text();

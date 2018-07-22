@@ -9,7 +9,7 @@
     "update": "npm version patch && claudia update --handler lambda.handler --region ap-southeast-2 --profile claudia",
     "destroy": "claudia destroy --handler lambda.handler --region ap-southeast-2 --profile claudia",
     "prod-clean": "del app* && del *.map",
-    "debug": "node --inspect app.js"
+    "debug": "node --inspect app.js --no-deprecation"
   },
   "devDependencies": {
     "claudia": "5.0.0"

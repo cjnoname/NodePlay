@@ -8,6 +8,6 @@ class Person {
     this.surname = surname;
   }
   public greet() {
-    alert('Hi!');
+    alert("Hi!");
   }
 }
