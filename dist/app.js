@@ -11738,10 +11738,10 @@ function plural(ms, n, name) {
 
 /***/ }),
 
-/***/ "./node_modules/node-fetch/lib/index.es.js":
-/*!*************************************************!*\
-  !*** ./node_modules/node-fetch/lib/index.es.js ***!
-  \*************************************************/
+/***/ "./node_modules/node-fetch/lib/index.mjs":
+/*!***********************************************!*\
+  !*** ./node_modules/node-fetch/lib/index.mjs ***!
+  \***********************************************/
 /*! exports provided: default, Headers, Request, Response, FetchError */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -11751,6 +11751,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Request", function() { return Request; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Response", function() { return Response; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FetchError", function() { return FetchError; });
+/* harmony import */ var stream__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! stream */ "stream");
+/* harmony import */ var stream__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(stream__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var http__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! http */ "http");
+/* harmony import */ var http__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(http__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var url__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! url */ "url");
+/* harmony import */ var url__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(url__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var https__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! https */ "https");
+/* harmony import */ var https__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(https__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var zlib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! zlib */ "zlib");
+/* harmony import */ var zlib__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(zlib__WEBPACK_IMPORTED_MODULE_4__);
+
+
+
+
+
+
 // Based on https://github.com/tmpvar/jsdom/blob/aa85b2abf07766ff7bf5c1f6daafb3726f2f2db5/lib/jsdom/living/blob.js
 // (MIT licensed)
 
@@ -11876,19 +11892,6 @@ FetchError.prototype = Object.create(Error.prototype);
 FetchError.prototype.constructor = FetchError;
 FetchError.prototype.name = 'FetchError';
 
-/**
- * body.js
- *
- * Body interface provides common methods for Request and Response
- */
-
-const Stream = __webpack_require__(/*! stream */ "stream");
-
-var _require = __webpack_require__(/*! stream */ "stream");
-
-const PassThrough = _require.PassThrough;
-
-
 let convert;
 try {
 	convert = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module 'encoding'"); e.code = 'MODULE_NOT_FOUND'; throw e; }())).convert;
@@ -11918,19 +11921,7 @@ function Body(body) {
 	if (body == null) {
 		// body is undefined or null
 		body = null;
-	} else if (typeof body === 'string') {
-		// body is string
-	} else if (isURLSearchParams(body)) {
-		// body is a URLSearchParams
-	} else if (body instanceof Blob) {
-		// body is blob
-	} else if (Buffer.isBuffer(body)) {
-		// body is buffer
-	} else if (Object.prototype.toString.call(body) === '[object ArrayBuffer]') {
-		// body is array buffer
-	} else if (body instanceof Stream) {
-		// body is stream
-	} else {
+	} else if (typeof body === 'string') ; else if (isURLSearchParams(body)) ; else if (body instanceof Blob) ; else if (Buffer.isBuffer(body)) ; else if (Object.prototype.toString.call(body) === '[object ArrayBuffer]') ; else if (ArrayBuffer.isView(body)) ; else if (body instanceof stream__WEBPACK_IMPORTED_MODULE_0___default.a) ; else {
 		// none of the above
 		// coerce to string
 		body = String(body);
@@ -11943,7 +11934,7 @@ function Body(body) {
 	this.size = size;
 	this.timeout = timeout;
 
-	if (body instanceof Stream) {
+	if (body instanceof stream__WEBPACK_IMPORTED_MODULE_0___default.a) {
 		body.on('error', function (err) {
 			_this[INTERNALS].error = new FetchError(`Invalid response body while trying to fetch ${_this.url}: ${err.message}`, 'system', err);
 		});
@@ -12101,13 +12092,18 @@ function consumeBody() {
 		return Body.Promise.resolve(this.body);
 	}
 
-	// body is buffer
+	// body is ArrayBuffer
 	if (Object.prototype.toString.call(this.body) === '[object ArrayBuffer]') {
 		return Body.Promise.resolve(Buffer.from(this.body));
 	}
 
+	// body is ArrayBufferView
+	if (ArrayBuffer.isView(this.body)) {
+		return Body.Promise.resolve(Buffer.from(this.body.buffer, this.body.byteOffset, this.body.byteLength));
+	}
+
 	// istanbul ignore if: should never happen
-	if (!(this.body instanceof Stream)) {
+	if (!(this.body instanceof stream__WEBPACK_IMPORTED_MODULE_0___default.a)) {
 		return Body.Promise.resolve(Buffer.alloc(0));
 	}
 
@@ -12117,7 +12113,7 @@ function consumeBody() {
 	let accumBytes = 0;
 	let abort = false;
 
-	return new Body.Promise(function (resolve, reject) {
+	return new Body.Promise(function (resolve$$1, reject) {
 		let resTimeout;
 
 		// allow timeout on slow response body
@@ -12156,7 +12152,7 @@ function consumeBody() {
 			clearTimeout(resTimeout);
 
 			try {
-				resolve(Buffer.concat(accum));
+				resolve$$1(Buffer.concat(accum));
 			} catch (err) {
 				// handle streams that have accumulated too much data (issue #414)
 				reject(new FetchError(`Could not create Buffer from response body for ${_this4.url}: ${err.message}`, 'system', err));
@@ -12258,10 +12254,10 @@ function clone(instance) {
 
 	// check that body is a stream and not form-data object
 	// note: we can't clone the form-data object without having it as a dependency
-	if (body instanceof Stream && typeof body.getBoundary !== 'function') {
+	if (body instanceof stream__WEBPACK_IMPORTED_MODULE_0___default.a && typeof body.getBoundary !== 'function') {
 		// tee instance body
-		p1 = new PassThrough();
-		p2 = new PassThrough();
+		p1 = new stream__WEBPACK_IMPORTED_MODULE_0__["PassThrough"]();
+		p2 = new stream__WEBPACK_IMPORTED_MODULE_0__["PassThrough"]();
 		body.pipe(p1);
 		body.pipe(p2);
 		// set instance body to teed body and return the other teed body
@@ -12303,7 +12299,10 @@ function extractContentType(instance) {
 		// body is buffer
 		return null;
 	} else if (Object.prototype.toString.call(body) === '[object ArrayBuffer]') {
-		// body is array buffer
+		// body is ArrayBuffer
+		return null;
+	} else if (ArrayBuffer.isView(body)) {
+		// body is ArrayBufferView
 		return null;
 	} else if (typeof body.getBoundary === 'function') {
 		// detect form data input from form-data module
@@ -12345,7 +12344,10 @@ function getTotalBytes(instance) {
 		// body is buffer
 		return body.length;
 	} else if (Object.prototype.toString.call(body) === '[object ArrayBuffer]') {
-		// body is array buffer
+		// body is ArrayBuffer
+		return body.byteLength;
+	} else if (ArrayBuffer.isView(body)) {
+		// body is ArrayBufferView
 		return body.byteLength;
 	} else if (body && typeof body.getLengthSync === 'function') {
 		// detect form data input from form-data module
@@ -12392,8 +12394,12 @@ function writeToStream(dest, instance) {
 		dest.write(body);
 		dest.end();
 	} else if (Object.prototype.toString.call(body) === '[object ArrayBuffer]') {
-		// body is array buffer
+		// body is ArrayBuffer
 		dest.write(Buffer.from(body));
+		dest.end();
+	} else if (ArrayBuffer.isView(body)) {
+		// body is ArrayBufferView
+		dest.write(Buffer.from(body.buffer, body.byteOffset, body.byteLength));
 		dest.end();
 	} else {
 		// body is stream
@@ -12473,9 +12479,7 @@ class Headers {
 
 		// We don't worry about converting prop to ByteString here as append()
 		// will handle it.
-		if (init == null) {
-			// no op
-		} else if (typeof init === 'object') {
+		if (init == null) ; else if (typeof init === 'object') {
 			const method = init[Symbol.iterator];
 			if (method != null) {
 				if (typeof method !== 'function') {
@@ -12784,17 +12788,6 @@ function createHeadersLenient(obj) {
 	return headers;
 }
 
-/**
- * response.js
- *
- * Response class provides content decoding
- */
-
-var _require$1 = __webpack_require__(/*! http */ "http");
-
-const STATUS_CODES = _require$1.STATUS_CODES;
-
-
 const INTERNALS$1 = Symbol('Response internals');
 
 /**
@@ -12816,7 +12809,7 @@ class Response {
 		this[INTERNALS$1] = {
 			url: opts.url,
 			status,
-			statusText: opts.statusText || STATUS_CODES[status],
+			statusText: opts.statusText || http__WEBPACK_IMPORTED_MODULE_1__["STATUS_CODES"][status],
 			headers: new Headers(opts.headers)
 		};
 	}
@@ -12878,20 +12871,6 @@ Object.defineProperty(Response.prototype, Symbol.toStringTag, {
 	configurable: true
 });
 
-/**
- * request.js
- *
- * Request class contains server only options
- *
- * All spec algorithm step numbers are based on https://fetch.spec.whatwg.org/commit-snapshots/ae716822cb3a61843226cd090eefc6589446c1d2/.
- */
-
-var _require$2 = __webpack_require__(/*! url */ "url");
-
-const format_url = _require$2.format;
-const parse_url = _require$2.parse;
-
-
 const INTERNALS$2 = Symbol('Request internals');
 
 /**
@@ -12923,14 +12902,14 @@ class Request {
 				// in order to support Node.js' Url objects; though WHATWG's URL objects
 				// will fall into this branch also (since their `toString()` will return
 				// `href` property anyway)
-				parsedURL = parse_url(input.href);
+				parsedURL = Object(url__WEBPACK_IMPORTED_MODULE_2__["parse"])(input.href);
 			} else {
 				// coerce input to a string before attempting to parse
-				parsedURL = parse_url(`${input}`);
+				parsedURL = Object(url__WEBPACK_IMPORTED_MODULE_2__["parse"])(`${input}`);
 			}
 			input = {};
 		} else {
-			parsedURL = parse_url(input.url);
+			parsedURL = Object(url__WEBPACK_IMPORTED_MODULE_2__["parse"])(input.url);
 		}
 
 		let method = init.method || input.method || 'GET';
@@ -12975,7 +12954,7 @@ class Request {
 	}
 
 	get url() {
-		return format_url(this[INTERNALS$2].parsedURL);
+		return Object(url__WEBPACK_IMPORTED_MODULE_2__["format"])(this[INTERNALS$2].parsedURL);
 	}
 
 	get headers() {
@@ -13076,27 +13055,6 @@ function getNodeRequestOptions(request) {
 }
 
 /**
- * index.js
- *
- * a request API compatible with window.fetch
- *
- * All spec algorithm step numbers are based on https://fetch.spec.whatwg.org/commit-snapshots/ae716822cb3a61843226cd090eefc6589446c1d2/.
- */
-
-const http = __webpack_require__(/*! http */ "http");
-const https = __webpack_require__(/*! https */ "https");
-
-var _require$3 = __webpack_require__(/*! stream */ "stream");
-
-const PassThrough$1 = _require$3.PassThrough;
-
-var _require2 = __webpack_require__(/*! url */ "url");
-
-const resolve_url = _require2.resolve;
-
-const zlib = __webpack_require__(/*! zlib */ "zlib");
-
-/**
  * Fetch function
  *
  * @param   Mixed    url   Absolute url or Request instance
@@ -13113,12 +13071,12 @@ function fetch(url, opts) {
 	Body.Promise = fetch.Promise;
 
 	// wrap http.request into fetch
-	return new fetch.Promise(function (resolve, reject) {
+	return new fetch.Promise(function (resolve$$1, reject) {
 		// build request object
 		const request = new Request(url, opts);
 		const options = getNodeRequestOptions(request);
 
-		const send = (options.protocol === 'https:' ? https : http).request;
+		const send = (options.protocol === 'https:' ? https__WEBPACK_IMPORTED_MODULE_3___default.a : http__WEBPACK_IMPORTED_MODULE_1___default.a).request;
 
 		// send request
 		const req = send(options);
@@ -13154,7 +13112,7 @@ function fetch(url, opts) {
 				const location = headers.get('Location');
 
 				// HTTP fetch step 5.3
-				const locationURL = location === null ? null : resolve_url(request.url, location);
+				const locationURL = location === null ? null : Object(url__WEBPACK_IMPORTED_MODULE_2__["resolve"])(request.url, location);
 
 				// HTTP fetch step 5.5
 				switch (request.redirect) {
@@ -13208,14 +13166,14 @@ function fetch(url, opts) {
 						}
 
 						// HTTP-redirect fetch step 15
-						resolve(fetch(new Request(locationURL, requestOpts)));
+						resolve$$1(fetch(new Request(locationURL, requestOpts)));
 						finalize();
 						return;
 				}
 			}
 
 			// prepare response
-			let body = res.pipe(new PassThrough$1());
+			let body = res.pipe(new stream__WEBPACK_IMPORTED_MODULE_0__["PassThrough"]());
 			const response_options = {
 				url: request.url,
 				status: res.statusCode,
@@ -13237,7 +13195,7 @@ function fetch(url, opts) {
 			// 4. no content response (204)
 			// 5. content not modified response (304)
 			if (!request.compress || request.method === 'HEAD' || codings === null || res.statusCode === 204 || res.statusCode === 304) {
-				resolve(new Response(body, response_options));
+				resolve$$1(new Response(body, response_options));
 				return;
 			}
 
@@ -13247,14 +13205,14 @@ function fetch(url, opts) {
 			// by common browsers.
 			// Always using Z_SYNC_FLUSH is what cURL does.
 			const zlibOptions = {
-				flush: zlib.Z_SYNC_FLUSH,
-				finishFlush: zlib.Z_SYNC_FLUSH
+				flush: zlib__WEBPACK_IMPORTED_MODULE_4___default.a.Z_SYNC_FLUSH,
+				finishFlush: zlib__WEBPACK_IMPORTED_MODULE_4___default.a.Z_SYNC_FLUSH
 			};
 
 			// for gzip
 			if (codings == 'gzip' || codings == 'x-gzip') {
-				body = body.pipe(zlib.createGunzip(zlibOptions));
-				resolve(new Response(body, response_options));
+				body = body.pipe(zlib__WEBPACK_IMPORTED_MODULE_4___default.a.createGunzip(zlibOptions));
+				resolve$$1(new Response(body, response_options));
 				return;
 			}
 
@@ -13262,27 +13220,26 @@ function fetch(url, opts) {
 			if (codings == 'deflate' || codings == 'x-deflate') {
 				// handle the infamous raw deflate response from old servers
 				// a hack for old IIS and Apache servers
-				const raw = res.pipe(new PassThrough$1());
+				const raw = res.pipe(new stream__WEBPACK_IMPORTED_MODULE_0__["PassThrough"]());
 				raw.once('data', function (chunk) {
 					// see http://stackoverflow.com/questions/37519828
 					if ((chunk[0] & 0x0F) === 0x08) {
-						body = body.pipe(zlib.createInflate());
+						body = body.pipe(zlib__WEBPACK_IMPORTED_MODULE_4___default.a.createInflate());
 					} else {
-						body = body.pipe(zlib.createInflateRaw());
+						body = body.pipe(zlib__WEBPACK_IMPORTED_MODULE_4___default.a.createInflateRaw());
 					}
-					resolve(new Response(body, response_options));
+					resolve$$1(new Response(body, response_options));
 				});
 				return;
 			}
 
 			// otherwise, use response as-is
-			resolve(new Response(body, response_options));
+			resolve$$1(new Response(body, response_options));
 		});
 
 		writeToStream(req, request);
 	});
 }
-
 /**
  * Redirect code matching
  *
@@ -13292,9 +13249,6 @@ function fetch(url, opts) {
 fetch.isRedirect = function (code) {
 	return code === 301 || code === 302 || code === 303 || code === 307 || code === 308;
 };
-
-// Needed for TypeScript.
-fetch.default = fetch;
 
 // expose Promise
 fetch.Promise = global.Promise;
@@ -20407,7 +20361,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 var _this = this;
 Object.defineProperty(exports, "__esModule", { value: true });
 var error_1 = __webpack_require__(/*! utils/error */ "./src/utils/error.ts");
-var node_fetch_1 = __webpack_require__(/*! node-fetch */ "./node_modules/node-fetch/lib/index.es.js");
+var node_fetch_1 = __webpack_require__(/*! node-fetch */ "./node_modules/node-fetch/lib/index.mjs");
 var fetchIt = (typeof window !== "undefined" && window.fetch) ? window.fetch : node_fetch_1.default;
 var sharedHeaders = {
     Accept: "application/json",

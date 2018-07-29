@@ -33,11 +33,11 @@
     "immutable": "4.0.0-rc.9",
     "inversify": "4.13.0",
     "inversify-express-utils": "6.1.0",
-    "node-fetch": "2.1.2",
+    "node-fetch": "2.2.0",
     "node-noop": "1.0.0",
     "reflect-metadata": "^0.1.12",
     "typescript": "2.9.2",
-    "webpack": "4.16.1",
+    "webpack": "4.16.3",
     "webpack-cli": "3.1.0"
   },
   "files": [
